@@ -9,13 +9,17 @@
 #include <vector>
 #include "Edge.h"
 
+using namespace std;
+
 class Airport {
 public:
-    std::string code;
-    std::vector<Edge> connections;
+    string code;
+    string cityState;
+    vector<Edge> connections;
 
-    Airport(const std::string& c) {
-        this->code = c;
+    Airport(const string& code, const string& cityState) {
+        this->code = code;
+        this->cityState = cityState;
     }
 };
 

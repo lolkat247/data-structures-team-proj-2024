@@ -17,7 +17,9 @@ private:
 public:
     Graph();
     ~Graph();
-    void addFlight(const string& origin, const string& destination, int distance, int cost);
+    void addFlight(const string& originCode, const string& destinationCode,
+                   const string& originCityState, const string& destinationCityState,
+                   int distance, int cost);
     void display();
 };
 

@@ -15,14 +15,18 @@ Graph::~Graph() {
     }
 }
 
-void Graph::addFlight(const string& origin, const string& destination, int distance, int cost) {
-    if (airports.find(origin) == airports.end()) {
-        airports[origin] = new Airport(origin);
+void Graph::addFlight(const string& originCode, const string& destinationCode,
+                      const string& originCityState, const string& destinationCityState,
+                      int distance, int cost) {
+    if (airports.find(originCode) == airports.end()) {
+        airports[originCode] = new Airport(originCode, originCityState);
     }
-    if (airports.find(destination) == airports.end()) {
-        airports[destination] = new Airport(destination);
+    if (airports.find(destinationCode) == airports.end()) {
+        airports[destinationCode] = new Airport(destinationCode, destinationCityState);
     }
-    airports[origin]->connections.emplace_back(airports[destination], distance, cost);
+    Airport* originAirport = airports[originCode];
+    Airport* destinationAirport = airports[destinationCode];
+    originAirport->connections.emplace_back(destinationAirport, distance, cost);
 }
 
 void Graph::display() {

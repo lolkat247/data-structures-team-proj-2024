@@ -48,10 +48,10 @@ void loadGraphData(Graph& graph, const string& filename) {
             continue;
         }
 
-        string& origin = fields[0];
-        string& destination = fields[1];
-        // fields[2] Origin_city
-        // fields[3] Destination_city
+        string& originCode = fields[0];
+        string& destinationCode = fields[1];
+        string& originCityState = fields[2];
+        string& destinationCityState = fields[3];
         string& distStr = fields[4];
         string& costStr = fields[5];
 
@@ -63,9 +63,9 @@ void loadGraphData(Graph& graph, const string& filename) {
             continue;
         }
 
-        graph.addFlight(origin, destination, distance, cost);
-        cout << "Added flight from " << origin << " to " <<
-            destination << " with distance " << distance <<
+        graph.addFlight(originCode, destinationCode, originCityState, destinationCityState, distance, cost);
+        cout << "Added flight from " << originCode << " to " <<
+            destinationCode << " with distance " << distance <<
             " and cost " << cost << endl;
     }
 }
