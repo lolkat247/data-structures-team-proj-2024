@@ -6,6 +6,8 @@
 
 #include <map>
 #include <string>
+#include <vector>
+#include <limits>
 #include "Airport.h"
 
 using namespace std;
@@ -21,6 +23,7 @@ public:
                    const string& originCityState, const string& destinationCityState,
                    int distance, int cost);
     void display();
+    vector<string> findShortestPath(const string& startCode, const string& goalCode, int& pathLength);
 };
 
 #define DATA_STRUCTURES_TEAM_PROJ_2024_GRAPH_H

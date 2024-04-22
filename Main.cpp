@@ -75,5 +75,25 @@ int main() {
     loadGraphData(graph, "airports.csv");
     cout << "Displaying graph:" << endl;
     graph.display();
+
+    string startCode, goalCode;
+    cout << "Enter origin airport code: ";
+    cin >> startCode;
+    cout << "Enter destination airport code: ";
+    cin >> goalCode;
+
+    int pathLength = 0;
+    vector<string> path = graph.findShortestPath(startCode, goalCode, pathLength);
+
+    if (!path.empty()) {
+        cout << "Shortest Path: ";
+        for (const string& code : path) {
+            cout << code << " ";
+        }
+        cout << "\nLength of Shortest Path: " << pathLength << " km\n";
+    } else {
+        cout << "No path found or one of the airports does not exist." << endl;
+    }
+
     return 0;
 }
