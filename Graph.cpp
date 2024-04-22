@@ -88,7 +88,7 @@ Graph::PathResult Graph::findPath(const string& startCode, const string& goalCod
 vector<string> Graph::findShortestPath(const string& startCode, const string& goalCode, int& pathLength) {
     PathResult result = findPath(startCode, goalCode, false);  // false for distance
     if (result.predecessors.find(goalCode) == result.predecessors.end()) {
-        cout << "No path exists." << endl;
+//        cout << "No path exists." << endl;
         return {};
     }
 
@@ -106,7 +106,7 @@ vector<string> Graph::findShortestPath(const string& startCode, const string& go
 vector<string> Graph::findLeastExpensivePath(const string& startCode, const string& goalCode, int& totalCost) {
     PathResult result = findPath(startCode, goalCode, true);  // true for cost
     if (result.predecessors.find(goalCode) == result.predecessors.end()) {
-        cout << "No path exists." << endl;
+//        cout << "No path exists." << endl;
         return {};
     }
 
