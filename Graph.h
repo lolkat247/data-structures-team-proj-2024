@@ -32,7 +32,8 @@ public:
     void display();
     vector<string> findShortestPath(const string& startCode, const string& goalCode, int& pathLength);
     vector<string> findLeastExpensivePath(const string& startCode, const string& goalCode, int& totalCost);
-
+    map<string, Airport*> getAirports();
+    vector<Airport*> getAllAirportsInState(string stateCode);
 };
 
 #define DATA_STRUCTURES_TEAM_PROJ_2024_GRAPH_H

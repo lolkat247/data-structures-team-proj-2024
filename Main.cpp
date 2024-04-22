@@ -73,9 +73,10 @@ void loadGraphData(Graph& graph, const string& filename) {
 int main() {
     Graph graph;
     loadGraphData(graph, "airports.csv");
-    cout << "Displaying graph:" << endl;
+    cout << "Task 1 Displaying graph:" << endl;
     graph.display();
 
+    cout << endl << "Task 2: Shortest path between two airports" << endl;
     string startCode, endCode;
     cout << "Enter origin airport code: ";
     cin >> startCode;
@@ -91,7 +92,7 @@ int main() {
         for (const string& code : path) {
             cout << code << " ";
         }
-        cout << "\nLength of Shortest Path: " << pathLength << " km\n";
+        cout << "\nLength of Shortest Path: " << pathLength << " units\n";
     } else {
         cout << "No path found or one of the airports does not exist based on distance." << endl;
     }
@@ -112,7 +113,42 @@ int main() {
 //    }
 
     // Calculate all shortest paths from an airport to all airports in another state
-    // TODO get all airports in a state
+    cout << endl << "Task 3: Shortest path between an airport and all airports in a state." << endl;
+
+    string endState; // startCode already decl
+    cout << "Enter origin airport code: ";
+    cin >> startCode;
+    cout << "Enter destination airport code (like 'WA'): ";
+    cin >> endState;
+
+    vector<Airport*> airportsInState = graph.getAllAirportsInState(endState);
+
+    if (!airportsInState.empty()){
+        cout << "Found airports in " << endState << ": ";
+        for (const auto& port : airportsInState) cout << port->code << ' ';
+        cout << endl;
+
+        for (const auto& port : airportsInState) {
+            // Calculate the shortest path based on distance
+            int pathLength = 0;
+            vector<string> path = graph.findShortestPath(startCode, port->code, pathLength);
+
+            cout << startCode << " -> " << port ->code << ": ";
+            if (!path.empty()) {
+                cout << "Shortest Path by distance: ";
+                for (const string& code : path) {
+                    cout << code << " ";
+                }
+                cout << "\n\tLength of Shortest Path: " << pathLength << " units\n";
+            } else {
+                cout << "No path found or one of the airports does not exist based on distance." << endl;
+            }
+        }
+
+    } else {
+        cout << "No airports in " << endState << endl;
+    }
+
 
     // TODO for all airports get shortest paths
 

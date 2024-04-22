@@ -120,3 +120,16 @@ vector<string> Graph::findLeastExpensivePath(const string& startCode, const stri
 
     return path;
 }
+
+map<string, Airport*> Graph::getAirports() {
+    return airports;
+}
+
+vector<Airport*> Graph::getAllAirportsInState(string stateCode) {
+    vector<Airport*> airportsInState;
+    for (auto& pair : airports) {
+        if (pair.second->getState() == stateCode) airportsInState.push_back(pair.second);
+    }
+
+    return airportsInState;
+}

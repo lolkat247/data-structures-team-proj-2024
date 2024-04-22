@@ -17,10 +17,9 @@ public:
     string cityState;
     vector<Edge> connections;
 
-    Airport(const string& code, const string& cityState) {
-        this->code = code;
-        this->cityState = cityState;
-    }
+    Airport(const string& code, const string& cityState);
+
+    string getState() const;
 };
 
 #endif //DATA_STRUCTURES_TEAM_PROJ_2024_AIRPORT_H
