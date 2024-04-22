@@ -16,6 +16,13 @@ class Graph {
 private:
     map<string, Airport*> airports;
 
+    struct PathResult {
+        unordered_map<string, int> costs;
+        unordered_map<string, string> predecessors;
+    };
+
+    PathResult findPath(const string& startCode, const string& goalCode, bool useCost);
+
 public:
     Graph();
     ~Graph();
@@ -24,6 +31,8 @@ public:
                    int distance, int cost);
     void display();
     vector<string> findShortestPath(const string& startCode, const string& goalCode, int& pathLength);
+    vector<string> findLeastExpensivePath(const string& startCode, const string& goalCode, int& totalCost);
+
 };
 
 #define DATA_STRUCTURES_TEAM_PROJ_2024_GRAPH_H

@@ -76,23 +76,38 @@ int main() {
     cout << "Displaying graph:" << endl;
     graph.display();
 
-    string startCode, goalCode;
+    string startCode, endCode;
     cout << "Enter origin airport code: ";
     cin >> startCode;
     cout << "Enter destination airport code: ";
-    cin >> goalCode;
+    cin >> endCode;
 
+    // Calculate the shortest path based on distance
     int pathLength = 0;
-    vector<string> path = graph.findShortestPath(startCode, goalCode, pathLength);
+    vector<string> path = graph.findShortestPath(startCode, endCode, pathLength);
 
     if (!path.empty()) {
-        cout << "Shortest Path: ";
+        cout << "Shortest Path by distance: ";
         for (const string& code : path) {
             cout << code << " ";
         }
         cout << "\nLength of Shortest Path: " << pathLength << " km\n";
     } else {
-        cout << "No path found or one of the airports does not exist." << endl;
+        cout << "No path found or one of the airports does not exist based on distance." << endl;
+    }
+
+    // Calculate the least expensive path based on cost
+    int totalCost = 0;
+    vector<string> costPath = graph.findLeastExpensivePath(startCode, endCode, totalCost);
+
+    if (!costPath.empty()) {
+        cout << "Least Expensive Path by cost: ";
+        for (const string& code : costPath) {
+            cout << code << " ";
+        }
+        cout << "\nTotal Cost of Least Expensive Path: " << totalCost << " units\n";
+    } else {
+        cout << "No path found or one of the airports does not exist based on cost." << endl;
     }
 
     return 0;

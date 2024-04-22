@@ -43,58 +43,80 @@ void Graph::display() {
     }
 }
 
-vector<string> Graph::findShortestPath(const string& startCode, const string& goalCode, int& pathLength) {
+Graph::PathResult Graph::findPath(const string& startCode, const string& goalCode, bool useCost) {
+    PathResult result;
     if (airports.find(startCode) == airports.end() || airports.find(goalCode) == airports.end()) {
         cout << "One or both airports not found." << endl;
-        return {};
+        return result;
     }
 
-    unordered_map<string, int> distances;
-    unordered_map<string, string> predecessors;
     auto comp = [&](const pair<int, string>& left, const pair<int, string>& right) {
         return left.first > right.first;
     };
     priority_queue<pair<int, string>, vector<pair<int, string>>, decltype(comp)> pq(comp);
 
     for (const auto& airport : airports) {
-        distances[airport.first] = numeric_limits<int>::max();
+        result.costs[airport.first] = numeric_limits<int>::max();
     }
 
-    distances[startCode] = 0;
+    result.costs[startCode] = 0;
     pq.push({0, startCode});
 
     while (!pq.empty()) {
-        auto [currentDistance, currentCode] = pq.top();
+        auto [currentCost, currentCode] = pq.top();
         pq.pop();
 
         if (currentCode == goalCode) {
-            pathLength = currentDistance;
             break;
         }
 
         for (const auto& edge : airports[currentCode]->connections) {
             string neighborCode = edge.destination->code;
-            int weight = edge.distance;
+            int weight = useCost ? edge.cost : edge.distance;
 
-            if (currentDistance + weight < distances[neighborCode]) {
-                distances[neighborCode] = currentDistance + weight;
-                predecessors[neighborCode] = currentCode;
-                pq.push({distances[neighborCode], neighborCode});
+            if (currentCost + weight < result.costs[neighborCode]) {
+                result.costs[neighborCode] = currentCost + weight;
+                result.predecessors[neighborCode] = currentCode;
+                pq.push({result.costs[neighborCode], neighborCode});
             }
         }
     }
 
-    if (predecessors.find(goalCode) == predecessors.end()) {
+    return result;
+}
+
+vector<string> Graph::findShortestPath(const string& startCode, const string& goalCode, int& pathLength) {
+    PathResult result = findPath(startCode, goalCode, false);  // false for distance
+    if (result.predecessors.find(goalCode) == result.predecessors.end()) {
         cout << "No path exists." << endl;
         return {};
     }
 
     vector<string> path;
-    for (string at = goalCode; at != startCode; at = predecessors[at]) {
+    for (string at = goalCode; at != startCode; at = result.predecessors[at]) {
         path.push_back(at);
     }
     path.push_back(startCode);
     reverse(path.begin(), path.end());
+    pathLength = result.costs[goalCode];
+
+    return path;
+}
+
+vector<string> Graph::findLeastExpensivePath(const string& startCode, const string& goalCode, int& totalCost) {
+    PathResult result = findPath(startCode, goalCode, true);  // true for cost
+    if (result.predecessors.find(goalCode) == result.predecessors.end()) {
+        cout << "No path exists." << endl;
+        return {};
+    }
+
+    vector<string> path;
+    for (string at = goalCode; at != startCode; at = result.predecessors[at]) {
+        path.push_back(at);
+    }
+    path.push_back(startCode);
+    reverse(path.begin(), path.end());
+    totalCost = result.costs[goalCode];
 
     return path;
 }
