@@ -34,6 +34,7 @@ public:
     vector<string> findLeastExpensivePath(const string& startCode, const string& goalCode, int& totalCost);
     unordered_map<string, Airport*> getAirports();
     vector<Airport*> getAllAirportsInState(string stateCode);
+    void countAndDisplayFlightConnections();
 };
 
 #define DATA_STRUCTURES_TEAM_PROJ_2024_GRAPH_H

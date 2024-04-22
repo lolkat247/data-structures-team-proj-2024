@@ -133,3 +133,50 @@ vector<Airport*> Graph::getAllAirportsInState(string stateCode) {
 
     return airportsInState;
 }
+
+void Graph::countAndDisplayFlightConnections() {
+    // Create a map to store airport codes and their total direct flight connections count
+    std::unordered_map<std::string, int> flightConnections;
+
+    // Iterate over each airport
+    for (const auto& pair : airports) {
+        const std::string& airportCode = pair.first;
+        const Airport* airport = pair.second;
+
+        // Count inbound flights (incoming connections)
+        int inboundCount = 0;
+        for (const auto& otherPair : airports) {
+            if (otherPair.first != airportCode) {
+                for (const auto& edge : otherPair.second->connections) {
+                    if (edge.destination->code == airportCode) {
+                        ++inboundCount;
+                        break; // Break after finding an inbound flight from this airport
+                    }
+                }
+            }
+        }
+
+        // Count outbound flights (outgoing connections)
+        int outboundCount = airport->connections.size();
+
+        // Calculate total direct flight connections
+        int totalConnections = inboundCount + outboundCount;
+
+        // Store the total connections count for this airport
+        flightConnections[airportCode] = totalConnections;
+    }
+
+    // Sort the airports based on their total direct flight connections count
+    std::vector<std::pair<std::string, int>> sortedConnections(
+            flightConnections.begin(), flightConnections.end());
+    std::sort(sortedConnections.begin(), sortedConnections.end(),
+              [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
+                  return a.second > b.second; // Sort in descending order of connections count
+              });
+
+    // Display the sorted list of airports with their total direct flight connections count
+    std::cout << "Total Direct Flight Connections:\n";
+    for (const auto& pair : sortedConnections) {
+        std::cout << "Airport: " << pair.first << ", Total Connections: " << pair.second << "\n";
+    }
+}
