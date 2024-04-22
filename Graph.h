@@ -36,6 +36,8 @@ public:
     vector<Airport*> getAllAirportsInState(string stateCode);
     void countAndDisplayFlightConnections();
     Graph createUndirectedGraph();
+    vector<string> findShortestPathWithStops(const string& startCode, const string& goalCode,
+                                             int& pathLength, int& numberOfStops);
 };
 
 #define DATA_STRUCTURES_TEAM_PROJ_2024_GRAPH_H

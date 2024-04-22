@@ -85,6 +85,7 @@ Graph::PathResult Graph::findPath(const string& startCode, const string& goalCod
     return result;
 }
 
+// dijkstra
 vector<string> Graph::findShortestPath(const string& startCode, const string& goalCode, int& pathLength) {
     PathResult result = findPath(startCode, goalCode, false);  // false for distance
     if (result.predecessors.find(goalCode) == result.predecessors.end()) {
@@ -213,4 +214,56 @@ Graph Graph::createUndirectedGraph() {
     }
 
     return undirectedGraph;
+}
+
+// modified bfs
+vector<string> Graph::findShortestPathWithStops(const string& startCode, const string& goalCode,
+                                                int& pathLength, int& numberOfStops) {
+    if (airports.find(startCode) == airports.end() || airports.find(goalCode) == airports.end()) {
+        cout << "One or both airports not found." << endl; // shouldn't happen
+        return {};
+    }
+
+    struct Node {
+        string code;
+        int totalDistance;
+        int stops;
+        vector<string> path;
+    };
+
+    queue<Node> q;
+    q.push({startCode, 0, 0, {startCode}});
+
+    int minPathLength = numeric_limits<int>::max();
+    vector<string> shortestPath;
+
+    while (!q.empty()) {
+        Node current = q.front();
+        q.pop();
+
+        // check if node reaches with the exact number of stops
+        if (current.code == goalCode && current.stops == numberOfStops) {
+            if (current.totalDistance < minPathLength) {
+                minPathLength = current.totalDistance;
+                shortestPath = current.path;
+            }
+            continue;
+        }
+
+        // continue if not
+        if (current.stops < numberOfStops) {
+            for (const auto& edge : airports[current.code]->connections) {
+                if (find(current.path.begin(), current.path.end(),
+                         edge.destination->code) == current.path.end()) { // Avoid cycles
+                    vector<string> newPath = current.path;
+                    newPath.push_back(edge.destination->code);
+                    q.push({edge.destination->code, current.totalDistance + edge.distance,
+                            current.stops + 1, newPath});
+                }
+            }
+        }
+    }
+
+    pathLength = minPathLength;
+    return shortestPath;
 }
