@@ -180,3 +180,37 @@ void Graph::countAndDisplayFlightConnections() {
         std::cout << "Airport: " << pair.first << ", Total Connections: " << pair.second << "\n";
     }
 }
+
+Graph Graph::createUndirectedGraph() {
+    Graph undirectedGraph;
+
+    // Traverse each airport
+    for (const auto& pair : airports) {
+        const std::string& originCode = pair.first;
+        const Airport* originAirport = pair.second;
+
+        // Traverse each connection from the current airport
+        for (const auto& edge : originAirport->connections) {
+            const std::string& destinationCode = edge.destination->code;
+            int cost = edge.cost;
+
+            // Check if for opposite edge
+            bool hasOppositeEdge = false;
+            for (const auto& oppositeEdge : edge.destination->connections) {
+                if (oppositeEdge.destination->code == originCode) {
+                    hasOppositeEdge = true;
+                    // Keep edge with the minimum cost value
+                    if (oppositeEdge.cost < cost) {
+                        cost = oppositeEdge.cost;
+                    }
+                    break;
+                }
+            }
+
+            // Add the edge to the undirected graph
+            undirectedGraph.addFlight(originCode, destinationCode, "", "", 0, cost);
+        }
+    }
+
+    return undirectedGraph;
+}

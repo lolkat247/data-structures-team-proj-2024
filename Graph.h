@@ -35,6 +35,7 @@ public:
     unordered_map<string, Airport*> getAirports();
     vector<Airport*> getAllAirportsInState(string stateCode);
     void countAndDisplayFlightConnections();
+    Graph createUndirectedGraph();
 };
 
 #define DATA_STRUCTURES_TEAM_PROJ_2024_GRAPH_H
