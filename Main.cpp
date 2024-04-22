@@ -149,10 +149,28 @@ int main() {
         cout << "No airports in " << endState << endl;
     }
 
-
-    // TODO for all airports get shortest paths
-
-    // TODO print all shortest paths
+//    cout << endl << "Task 4: Shortest path between two airports with given number of stops" << endl;
+//    int numberOfStops;
+//    cout << "Enter origin airport code: ";
+//    cin >> startCode;
+//    cout << "Enter destination airport code: ";
+//    cin >> endCode;
+//    cout << "Enter number of stops: ";
+//    cin >> numberOfStops;
+//
+//    // Calculate the shortest path based on distance
+//    pathLength = 0;
+//    path = graph.findShortestPathWithStops(startCode, endCode, pathLength, numberOfStops);
+//
+//    if (!path.empty()) {
+//        cout << "Shortest path by distance with " << numberOfStops << " stops: ";
+//        for (const string& code : path) {
+//            cout << code << " ";
+//        }
+//        cout << "\nLength of shortest path with " << numberOfStops << " stops: " << pathLength << " units\n";
+//    } else {
+//        cout << "No path found or one of the airports does not exist based on distance." << endl;
+//    }
 
     return 0;
 }
