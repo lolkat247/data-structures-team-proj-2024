@@ -136,71 +136,68 @@ vector<Airport*> Graph::getAllAirportsInState(string stateCode) {
 }
 
 void Graph::countAndDisplayFlightConnections() {
-    // Create a map to store airport codes and their total direct flight connections count
-    std::unordered_map<std::string, int> flightConnections;
-
-    // Iterate over each airport
+    unordered_map<string, int> flightConnections;
     for (const auto& pair : airports) {
-        const std::string& airportCode = pair.first;
+        const string& airportCode = pair.first;
         const Airport* airport = pair.second;
 
-        // Count inbound flights (incoming connections)
+        // Count inbound flights
         int inboundCount = 0;
         for (const auto& otherPair : airports) {
             if (otherPair.first != airportCode) {
                 for (const auto& edge : otherPair.second->connections) {
                     if (edge.destination->code == airportCode) {
                         ++inboundCount;
-                        break; // Break after finding an inbound flight from this airport
+                        break;
                     }
                 }
             }
         }
-
-        // Count outbound flights (outgoing connections)
+        // Count outbound flights
         int outboundCount = airport->connections.size();
 
-        // Calculate total direct flight connections
+        // Total flight connections
         int totalConnections = inboundCount + outboundCount;
 
-        // Store the total connections count for this airport
+        // Store connections for airport
         flightConnections[airportCode] = totalConnections;
     }
 
-    // Sort the airports based on their total direct flight connections count
-    std::vector<std::pair<std::string, int>> sortedConnections(
+    // Sort the airports (descending) by total connections
+    vector<pair<string, int>> sortedConnections(
             flightConnections.begin(), flightConnections.end());
-    std::sort(sortedConnections.begin(), sortedConnections.end(),
-              [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
-                  return a.second > b.second; // Sort in descending order of connections count
-              });
+    sort(sortedConnections.begin(), sortedConnections.end(), compareConnections);
 
-    // Display the sorted list of airports with their total direct flight connections count
-    std::cout << "Total Direct Flight Connections:\n";
+    // Display sorted list
+    cout << "Total Direct Flight Connections:\n";
     for (const auto& pair : sortedConnections) {
-        std::cout << "Airport: " << pair.first << ", Total Connections: " << pair.second << "\n";
+        cout << "Airport: " << pair.first << ", Total Connections: " << pair.second << "\n";
     }
+}
+
+// Comparing connections function
+bool Graph::compareConnections(const pair<string, int>& a, const pair<string, int>& b) {
+    return a.second > b.second;
 }
 
 Graph Graph::createUndirectedGraph() {
     Graph undirectedGraph;
-
-    // Traverse each airport
+    // Current airport...
     for (const auto& pair : airports) {
-        const std::string& originCode = pair.first;
+        const string& originCode = pair.first;
         const Airport* originAirport = pair.second;
 
-        // Traverse each connection from the current airport
+        //...Goes through airport connected to current airport
         for (const auto& edge : originAirport->connections) {
-            const std::string& destinationCode = edge.destination->code;
+            const string& destinationCode = edge.destination->code;
             int cost = edge.cost;
 
-            // Check if for opposite edge
+            // Check for opposite edge
             bool hasOppositeEdge = false;
             for (const auto& oppositeEdge : edge.destination->connections) {
                 if (oppositeEdge.destination->code == originCode) {
                     hasOppositeEdge = true;
-                    // Keep edge with the minimum cost value
+                    // Keeps edge with smaller cost
                     if (oppositeEdge.cost < cost) {
                         cost = oppositeEdge.cost;
                     }
@@ -208,7 +205,7 @@ Graph Graph::createUndirectedGraph() {
                 }
             }
 
-            // Add the edge to the undirected graph
+            // Add the edge to undirected graph
             undirectedGraph.addFlight(originCode, destinationCode, "", "", 0, cost);
         }
     }

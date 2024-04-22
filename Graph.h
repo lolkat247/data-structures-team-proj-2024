@@ -35,6 +35,7 @@ public:
     unordered_map<string, Airport*> getAirports();
     vector<Airport*> getAllAirportsInState(string stateCode);
     void countAndDisplayFlightConnections();
+    static bool compareConnections(const pair<string, int>& a, const pair<string, int>& b);
     Graph createUndirectedGraph();
     vector<string> findShortestPathWithStops(const string& startCode, const string& goalCode,
                                              int& pathLength, int& numberOfStops);
