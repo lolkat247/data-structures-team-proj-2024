@@ -6,7 +6,7 @@
 #include <iostream>
 #include <queue>
 #include <limits>
-#include <map>
+#include <unordered_map>
 #include <algorithm>
 
 using namespace std;
@@ -121,7 +121,7 @@ vector<string> Graph::findLeastExpensivePath(const string& startCode, const stri
     return path;
 }
 
-map<string, Airport*> Graph::getAirports() {
+unordered_map<string, Airport*> Graph::getAirports() {
     return airports;
 }
 

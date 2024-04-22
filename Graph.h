@@ -4,7 +4,7 @@
 
 #ifndef DATA_STRUCTURES_TEAM_PROJ_2024_GRAPH_H
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 #include <limits>
@@ -14,7 +14,7 @@ using namespace std;
 
 class Graph {
 private:
-    map<string, Airport*> airports;
+    unordered_map<string, Airport*> airports;
 
     struct PathResult {
         unordered_map<string, int> costs;
@@ -32,7 +32,7 @@ public:
     void display();
     vector<string> findShortestPath(const string& startCode, const string& goalCode, int& pathLength);
     vector<string> findLeastExpensivePath(const string& startCode, const string& goalCode, int& totalCost);
-    map<string, Airport*> getAirports();
+    unordered_map<string, Airport*> getAirports();
     vector<Airport*> getAllAirportsInState(string stateCode);
 };
 
