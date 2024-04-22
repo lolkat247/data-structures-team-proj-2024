@@ -96,19 +96,27 @@ int main() {
         cout << "No path found or one of the airports does not exist based on distance." << endl;
     }
 
-    // Calculate the least expensive path based on cost
-    int totalCost = 0;
-    vector<string> costPath = graph.findLeastExpensivePath(startCode, endCode, totalCost);
+    // This seems unnecessary if we look at the project document
+//    // Calculate the least expensive path based on cost
+//    int totalCost = 0;
+//    vector<string> costPath = graph.findLeastExpensivePath(startCode, endCode, totalCost);
+//
+//    if (!costPath.empty()) {
+//        cout << "Least Expensive Path by cost: ";
+//        for (const string& code : costPath) {
+//            cout << code << " ";
+//        }
+//        cout << "\nTotal Cost of Least Expensive Path: " << totalCost << " units\n";
+//    } else {
+//        cout << "No path found or one of the airports does not exist based on cost." << endl;
+//    }
 
-    if (!costPath.empty()) {
-        cout << "Least Expensive Path by cost: ";
-        for (const string& code : costPath) {
-            cout << code << " ";
-        }
-        cout << "\nTotal Cost of Least Expensive Path: " << totalCost << " units\n";
-    } else {
-        cout << "No path found or one of the airports does not exist based on cost." << endl;
-    }
+    // Calculate all shortest paths from an airport to all airports in another state
+    // TODO get all airports in a state
+
+    // TODO for all airports get shortest paths
+
+    // TODO print all shortest paths
 
     return 0;
 }
