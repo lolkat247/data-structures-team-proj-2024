@@ -65,8 +65,8 @@ void loadGraphData(Graph& graph, const string& filename) {
 
         graph.addFlight(originCode, destinationCode, originCityState, destinationCityState, distance, cost);
         cout << "Added flight from " << originCode << " to " <<
-            destinationCode << " with distance " << distance <<
-            " and cost " << cost << endl;
+             destinationCode << " with distance " << distance <<
+             " and cost " << cost << endl;
     }
 }
 
@@ -176,7 +176,15 @@ int main() {
     graph.countAndDisplayFlightConnections();
 
     // Task 6, Creating Undirected Graph.
-    graph.createUndirectedGraph();
+    Graph Undirected=graph.createUndirectedGraph();
+    cout<<endl<<"Task 7: Prim's Algorithm\nEnter Source: ";
+    string source;
+    cin>>source;
+    Graph Prims=Undirected.Prims(source);
+    Prims.displayMST();
+    cout<<endl<<"Task 8: Kruskal's Algorithm\n";
+    Graph Kruskal=Undirected.Kruskal();
+    Kruskal.displayMST();
 
     return 0;
 }

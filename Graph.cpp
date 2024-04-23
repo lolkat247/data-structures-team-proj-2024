@@ -3,9 +3,10 @@
 //
 
 #include "Graph.h"
+#include "UnionFind.h"
 #include <iostream>
 #include <queue>
-#include <limits>
+#include <climits>
 #include <unordered_map>
 #include <algorithm>
 
@@ -38,7 +39,7 @@ void Graph::display() {
         cout << "Airport: " << pair.first << endl;
         for (const auto& edge : pair.second->connections) {
             cout << "  -> " << edge.destination->code << " (Distance: " <<
-                edge.distance << ", Cost: " << edge.cost << ")" << endl;
+                 edge.distance << ", Cost: " << edge.cost << ")" << endl;
         }
     }
 }
@@ -63,7 +64,11 @@ Graph::PathResult Graph::findPath(const string& startCode, const string& goalCod
     pq.push({0, startCode});
 
     while (!pq.empty()) {
-        auto [currentCost, currentCode] = pq.top();
+
+        pair<int, string> topElement = pq.top();
+        int currentCost = topElement.first;
+        string currentCode = topElement.second;
+        pq.top();
         pq.pop();
 
         if (currentCode == goalCode) {
@@ -263,4 +268,111 @@ vector<string> Graph::findShortestPathWithStops(const string& startCode, const s
 
     pathLength = minPathLength;
     return shortestPath;
+}
+Graph Graph:: Prims(const string & startCode)
+{
+    Graph MST;
+    using Edge = pair<int, string>;
+
+    priority_queue<Edge, vector<Edge>, greater<Edge>> minHeap;
+    unordered_map<string, int> key;
+    unordered_map<string, string> parent;
+    unordered_map<string, bool> inMST;
+
+
+    for (const auto& pair : airports) {
+        key[pair.first] = INT_MAX;
+        parent[pair.first] = "";
+        inMST[pair.first] = false;
+    }
+
+
+    key[startCode] = 0;
+    minHeap.push({0, startCode});
+
+    while (!minHeap.empty()) {
+        string u = minHeap.top().second;
+        minHeap.pop();
+
+
+        inMST[u] = true;
+
+
+        for (const auto& connection : airports[u]->connections) {
+            string v = connection.destination->code;
+            int weight = connection.cost;
+
+
+            if (!inMST[v] && weight < key[v]) {
+                key[v] = weight;
+                parent[v] = u;
+                minHeap.push({weight, v});
+            }
+        }
+    }
+
+
+    for (const auto& pair : parent) {
+        if (pair.second != "") {
+            MST.addFlight(pair.second, pair.first, "", "", 0, key[pair.first]);
+        }
+    }
+
+    return MST;
+}
+Graph Graph::Kruskal()
+{
+    Graph mst;  // The resulting MST
+
+    // Collect all edges from the graph
+    std::vector<std::pair<int, std::pair<std::string, std::string>>> edges;
+    for (const auto& airport : airports) {
+        const std::string& origin = airport.first;
+        for (const auto& connection : airport.second->connections) {
+            const std::string& destination = connection.destination->code;
+            int cost = connection.cost;
+            edges.emplace_back(cost, std::make_pair(origin, destination));
+        }
+    }
+
+    // Sort the edges by weight
+    std::sort(edges.begin(), edges.end());
+
+    // Initialize the union-find structure
+    UnionFind uf;
+    for (const auto& airport : airports) {
+        uf.makeSet(airport.first);
+    }
+
+    // Iterate over the sorted edges to build the MST
+    for (const auto& edge : edges) {
+        int cost = edge.first;
+        const std::string& origin = edge.second.first;
+        const std::string& destination = edge.second.second;
+
+        // Check if adding this edge creates a cycle
+        if (uf.find(origin) != uf.find(destination)) {
+            mst.addFlight(origin, destination, "", "", 0, cost);  // Add edge to MST
+            uf.unionSets(origin, destination);  // Join the sets to prevent future cycles
+        }
+    }
+
+    return mst;  // Return the constructed MST
+
+}
+void Graph:: displayMST() const {
+    int totalCost;
+    cout << "Minimal Spanning Tree:\n";
+    for (const auto& pair : airports) {
+        const string& origin = pair.first;
+        for (const auto& connection : pair.second->connections) {
+            const string& destination = connection.destination->code;
+            int cost = connection.cost;
+            cout << "Edge: (" << origin << "-> " << destination << ") - Cost: " << cost << "\n";
+
+            totalCost=totalCost+cost;
+
+        }
+    }
+    cout<<"Total Cost:           "<<totalCost<<endl;
 }

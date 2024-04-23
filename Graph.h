@@ -39,6 +39,9 @@ public:
     Graph createUndirectedGraph();
     vector<string> findShortestPathWithStops(const string& startCode, const string& goalCode,
                                              int& pathLength, int& numberOfStops);
+    Graph Prims(const string & startCode);
+    Graph Kruskal();
+    void displayMST()const;
 };
 
 #define DATA_STRUCTURES_TEAM_PROJ_2024_GRAPH_H

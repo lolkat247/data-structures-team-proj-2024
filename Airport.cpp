@@ -2,7 +2,7 @@
 // Created by Jake Iglesias on 4/22/24.
 //
 
-#import "Airport.h"
+#include "Airport.h"
 
 Airport::Airport(const string &code, const string &cityState) {
     this->code = code;
